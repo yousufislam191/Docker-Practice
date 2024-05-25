@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    networks:
+      - bridge
+    volumes:
+      - mongo_data:/data/db
+  
+  order-api:
+    image: orderapi
+    container_name: orderapi
+    ports:
+      - "3001:3001"
+    networks:
+      - bridge
+    volumes:
+      - orderapi_data:/usr/share/orderapi/data
+    environment:
+      - DEBUG=1
+      - DB_HOST=mongo
+    depends_on:
+      - mongo
+  
+  staticserver:
+    image: staticserver
+    container_name: staticserver
+    ports:
+      - "3000:3000"
+    networks:
+      - bridge
+    volumes:
+      - staticserver_data:/usr/share/staticserver/data
+    environment:
+      - DEBUG=1
+      - DB_HOST=mongo
+    depends_on:
+      - mongo
+
+networks:
+  bridge:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  orderapi_data:
+  staticserver_data:
