@@ -10,9 +10,10 @@ services:
     volumes:
       - mongo_data:/data/db
   
-  order-api:
+  orderapi:
     image: orderapi
     container_name: orderapi
+    restart: always
     ports:
       - "3001:3001"
     networks:
@@ -28,6 +29,7 @@ services:
   staticserver:
     image: staticserver
     container_name: staticserver
+    restart: always
     ports:
       - "3000:3000"
     networks:
@@ -39,6 +41,19 @@ services:
       - DB_HOST=mongo
     depends_on:
       - mongo
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - bridge
+    depends_on:
+      - orderapi
+      - staticserver
 
 networks:
   bridge:

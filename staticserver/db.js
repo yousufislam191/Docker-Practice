@@ -4,6 +4,7 @@ require("dotenv").config();
 const mongodbUrl = `mongodb://${
   process.env.DB_HOST || "localhost:27017"
 }/staticserver`;
+// const mongodbUrl =
 //   process.env.DB_HOST || "mongodb://localhost:27017/staticserver";
 
 const connectDB = async (options = {}) => {
