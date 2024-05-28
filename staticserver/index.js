@@ -27,6 +27,14 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get("/message", async (req, res) => {
+  res.status(200).json({ message: "Hello World" });
+});
+
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
 //Start Your WebServer & Listen on PORT 3000
 app.listen(PORT, async () => {
   console.log(`Server is listening port http://${HOST}:${PORT}`);
